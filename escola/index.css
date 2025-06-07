@@ -50,3 +50,7 @@ body.dark-mode button {
 body.dark-mode button:hover {
     background-color: #444444;
 }
+
+body{
+    background-color: blueviolet;
+}

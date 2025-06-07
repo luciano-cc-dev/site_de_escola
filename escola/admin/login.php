@@ -1,22 +1,27 @@
 <?php
-// Salve isso como admin/criar_usuario.php e execute no navegador só uma vez
-include 'conexao.php';
+session_start();           // precisamos da sessão
 
-$nome = 'Luciano';
-$email = 'luciano@email.com';
-$senha = password_hash('123456', PASSWORD_DEFAULT);
+// Verifica se veio por POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Valores que você pediu
+    $nomeCorreto   = 'Luciano';
+    $emailCorreto  = 'lu@gmail.com';
+    $senhaCorreta  = '123';
 
-$sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("sss", $nome, $email, $senha);
-$stmt->execute();
-echo "Usuário criado.";
+    // Dados enviados pelo formulário
+    $nome  = $_POST['nome']  ?? '';
+    $email = $_POST['email'] ?? '';
+    $senha = $_POST['senha'] ?? '';
 
-<form action="autenticar.php" method="POST">
-  <h2>Login</h2>
-  <input type="email" name="email" placeholder="Email" required><br>
-  <input type="password" name="senha" placeholder="Senha" required><br>
-  <button type="submit">Entrar</button>
-</form>
+    if ($nome === $nomeCorreto && $email === $emailCorreto && $senha === $senhaCorreta) {
+        // guarda na sessão e redireciona
+        $_SESSION['usuario'] = $nomeCorreto;
+        header('Location: painel.php');
+        exit;
+    }
 
-?>
+    // caso contrário
+    header('Location: ../index2.html?erro=1');
+    exit;
+}
+echo 'Acesso inválido.';

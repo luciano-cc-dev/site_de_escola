@@ -1,4 +1,3 @@
-
 <?php
 include 'conexao.php';
 $sql = "SELECT * FROM contatos ORDER BY data_envio DESC";
@@ -23,16 +22,21 @@ $result = $conn->query($sql);
           <th>E-mail</th>
           <th>Mensagem</th>
           <th>Data</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody>
-        <?php while($row = $result->fetch_assoc()): ?>
+        <?php while ($linha = $result->fetch_assoc()): ?>
         <tr>
-          <td><?= $row['id'] ?></td>
-          <td><?= $row['nome'] ?></td>
-          <td><?= $row['email'] ?></td>
-          <td><?= $row['mensagem'] ?></td>
-          <td><?= $row['data_envio'] ?></td>
+          <td><?= $linha["id"] ?></td>
+          <td><?= htmlspecialchars($linha["nome"]) ?></td>
+          <td><?= htmlspecialchars($linha["email"]) ?></td>
+          <td><?= nl2br(htmlspecialchars($linha["mensagem"])) ?></td>
+          <td><?= $linha["data_envio"] ?></td>
+          <td>
+            <a href="editar.php?id=<?= $linha['id'] ?>">✏️ Editar</a> |
+            <a href="excluir.php?id=<?= $linha['id'] ?>" onclick="return confirm('Deseja excluir esta mensagem?')">🗑️ Excluir</a>
+          </td>
         </tr>
         <?php endwhile; ?>
       </tbody>
